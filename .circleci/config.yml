@@ -26,16 +26,16 @@ jobs:
       - run: |
           echo "Running test"
           npm run test
-  build-and-push:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.7
-      - run: |
-          docker build -t education-space:latest .
-          docker push jianxunbak/education-space:latest
+  # build-and-push:
+  #   docker:
+  #     - image: cimg/node:16.10
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker:
+  #         version: 20.10.7
+  #     - run: |
+  #         docker build -t education-space:latest .
+  #         docker push jianxunbak/education-space:latest
 
 workflows:
   simple_workflow:
@@ -44,7 +44,7 @@ workflows:
       - test:
           requires:
             - build
-      - build-and-push:
-          requires: |
-            - build
-            - test
+      # - build-and-push:
+      #     requires: |
+      #       - build
+      #       - test
