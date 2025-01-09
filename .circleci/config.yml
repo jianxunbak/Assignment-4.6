@@ -33,7 +33,7 @@ jobs:
       - checkout
       - setup_remote_docker: {}
       - run: |
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker build -t jianxunbak/education-space:latest .
           docker push jianxunbak/education-space:latest
 
