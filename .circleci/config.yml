@@ -36,7 +36,7 @@ jobs:
       - run:
           name: Heroku Container Push
           command: |
-            heroku container: login
+            heroku container:login
             heroku stack:set container -a jianxun-su-devops
             heroku container:push web -a jianxun-su-devops
             heroku container:release web -a jianxun-su-devops
