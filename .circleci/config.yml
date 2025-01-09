@@ -33,7 +33,7 @@ jobs:
       - checkout
       - setup_remote_docker: {}
       - run: |
-          docker build -t education-space:latest .
+          docker build -t jianxunbak/education-space:latest .
           docker push jianxunbak/education-space:latest
 
 workflows:
