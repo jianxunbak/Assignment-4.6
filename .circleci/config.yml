@@ -26,20 +26,17 @@ jobs:
       - run: |
           echo "Running test"
           npm run test
-  deploy:
+  build-and-push:
     docker:
       - image: cimg/node:16.10
     steps:
-      - setup_remote_docker
-      - heroku/install
       - checkout
-      - run:
-          name: Heroku Container Push
-          command: |
-            heroku container:login
-            heroku stack:set container -a jianxun-su-devops
-            heroku container:push web -a jianxun-su-devops
-            heroku container:release web -a jianxun-su-devops
+      - setup_remote_docker:
+          version: 20.10.7
+      - run: |
+        docker build -t education-space:latest .
+        docker push jianxunbak/education-space:latest
+
 
 workflows:
   simple_workflow:
@@ -48,6 +45,7 @@ workflows:
       - test:
           requires:
             - build
-      - deploy:
-          requires:
+      - build-and-push:
+          -requires: |
+            - build
             - test
