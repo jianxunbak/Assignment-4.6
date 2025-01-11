@@ -1,0 +1,84 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.1
+  heroku: circleci/heroku@2.0.0
+  docker: circleci/docker@2.1.4
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "Install dependencies"
+          npm install
+  test:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "Running test"
+          npm run test
+  publish:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - setup_remote_docker: {}
+      - run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build -t jianxunbak/education-space:latest .
+          docker push jianxunbak/education-space:latest
+  deploy:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - setup_remote_docker
+      - heroku/install
+      - checkout
+      - run:
+          name: Heroku Container Push
+          command: |
+            heroku container:login
+            heroku stack:set container -a jianxun-su-devops
+            heroku container:push web -a jianxun-su-devops
+            heroku container:release web -a jianxun-su-devops
+
+workflows:
+  simple_workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only:
+                - main
+                - release
+      - test:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
+                - release
+      - publish:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - release
+      - deploy:
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - release
