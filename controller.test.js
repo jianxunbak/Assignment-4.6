@@ -6,13 +6,13 @@ describe("the print function", () => {
     jest.clearAllMocks();
   });
 
-  it("should respond with 'everyone!'", () => {
+  it("should respond with 'hello everyone here!'", () => {
     const mockReq = {};
     const mockRes = {
       send: jest.fn(),
     };
 
     targetFn(mockReq, mockRes);
-    expect(mockRes.send).toHaveBeenCalledWith("Hello everyone!"); // If you change this value, the test will fail.
+    expect(mockRes.send).toHaveBeenCalledWith("Hello everyone here!"); // If you change this value, the test will fail.
   });
 });
