@@ -60,6 +60,8 @@ workflows:
               only:
                 - main
                 - release
+            tags:
+              only: /^v.*/
       - test:
           requires:
             - build
@@ -68,6 +70,8 @@ workflows:
               only:
                 - main
                 - release
+            tags:
+              only: /^v.*/
       - publish:
           requires:
             - test
