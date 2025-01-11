@@ -72,13 +72,15 @@ workflows:
           requires:
             - test
           filters:
+            tag:
+              only: /^v.*/
             branches:
-              only:
-                - release
+              ignore: /.*/
       - deploy:
           requires:
-            - test
+            - publish
           filters:
+            tag:
+              only: /^v.*/
             branches:
-              only:
-                - release
+              ignore: /.*/
