@@ -57,7 +57,7 @@ workflows:
       - build:
           filters:
             branches:
-              only: 
+              only:
                 - main
                 - release
       - test:
@@ -65,7 +65,7 @@ workflows:
             - build
           filters:
             branches:
-              only: 
+              only:
                 - main
                 - release
       - publish:
@@ -73,10 +73,12 @@ workflows:
             - test
           filters:
             branches:
-              only: - release
+              only:
+                - release
       - deploy:
           requires:
             - test
           filters:
             branches:
-              only: - release
+              only:
+                - release
